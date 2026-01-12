@@ -5,6 +5,12 @@ on:
       - 'app/**'
       - 'west.yml'
       - 'build.sh'
+  pull_request:
+    paths:
+      - 'app/**'
+      - 'west.yml'
+      - 'build.sh'
+  workflow_dispatch:
   workflow_call:
 defaults:
   run:

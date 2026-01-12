@@ -12,7 +12,7 @@ west update -o=--depth=1 -n
 
 mkdir artifacts
 
-west build -b adafruit_feather_nrf52840/nrf52840/uf2 -d build-adafruit_feather_nrf52840 app -- -DEXTRA_DTC_OVERLAY_FILE=boards/feather_mapping.overlay
+west build -b adafruit_feather_nrf52840/nrf52840/uf2 -d build-adafruit_feather_nrf52840 app -- -DEXTRA_DTC_OVERLAY_FILE=boards/feather_mapping_custom.overlay
 mv build-adafruit_feather_nrf52840/app/zephyr/slimbox-bt.uf2 artifacts/
 
 west build -b xiao_ble -d build-flatbox-rev7-nrf52840 app -- -DEXTRA_CONF_FILE=boards/flatbox_rev7.conf -DEXTRA_DTC_OVERLAY_FILE="boards/xiao_ble_i2c_pullup.overlay boards/flatbox_rev7.overlay"
