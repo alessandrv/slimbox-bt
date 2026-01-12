@@ -1,10 +1,21 @@
-name: build
+name: build-feather
 on:
-  workflow_call:
+  push:
+    paths:
+      - 'app/**'
+      - 'west.yml'
+      - 'build_feather.sh'
+  pull_request:
+    paths:
+      - 'app/**'
+      - 'west.yml'
+      - 'build_feather.sh'
   workflow_dispatch:
+
 defaults:
   run:
     shell: bash --noprofile --norc -x -e -o pipefail {0}
+
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -15,9 +26,10 @@ jobs:
           sudo rm -rf "$AGENT_TOOLSDIRECTORY" /usr/local/lib/android /usr/share/dotnet || true
           df -h
       - uses: actions/checkout@v4
-      - name: Build
+      - name: Build slimbox-bt.uf2 (Feather only)
         run: |
-          docker run -v $PWD:/workspace/project -w /workspace/project ghcr.io/zephyrproject-rtos/ci:v0.28.4 ./build.sh vatican-cameos
+          docker run -v $PWD:/workspace/project -w /workspace/project ghcr.io/zephyrproject-rtos/ci:v0.28.4 ./build_feather.sh vatican-cameos
       - uses: actions/upload-artifact@v4
         with:
+          name: feather-uf2
           path: artifacts/*

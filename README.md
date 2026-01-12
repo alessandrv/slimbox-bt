@@ -32,7 +32,7 @@ For devices using the nRF54L15 chip that don't come with a UF2 bootloader, you w
 
 ## Pinout
 
-For the Adafruit Feather nRF52840 Express build (`slimbox-bt.uf2`), the pin mapping is defined in `app/boards/feather_mapping_custom.overlay`. Edit that file to match how you wired your buttons.
+For the `slimbox-bt.uf2` build, the pin mapping is defined in `app/boards/feather_mapping_custom.overlay`. Edit that file to match how you wired your buttons.
 
 If you're using the `slimbox-bt.uf2` firmware with an Adafruit Feather nRF52840 Express board, wire the buttons to pins on the board as follows:
 
@@ -75,7 +75,10 @@ D10 | D-pad down
 
 ## How to compile
 
-The easiest way to compile the firmware is to let GitHub do it for you. This repository has GitHub Actions that build the firmware, so you can just fork, enable Actions, make your changes, wait for the job to complete, and download the UF2/HEX files from the workflow run's Artifacts.
+The easiest way to compile the firmware is to let GitHub do it for you.
+
+* The `build-feather` workflow builds only `slimbox-bt.uf2` (fastest), and uploads it as an artifact.
+* The `build` workflow builds all variants (used by releases).
 
 To compile it on your own machine, you can either follow [Nordic's setup instructions](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/installation.html) to prepare the build environment, or you can use Docker. Either way take a look at the [build.sh](build.sh) script. With Docker a command like this builds all existing variants (start from the top level of the repository or adjust the path accordingly):
 
