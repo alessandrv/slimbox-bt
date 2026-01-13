@@ -447,9 +447,14 @@ static void report_init() {
 }
 
 #define GPIO_PIN_CONFIGURE(node_id) CHK(gpio_pin_configure_dt(&BUTTON_FOR_ID(node_id), GPIO_INPUT | GPIO_PULL_UP | GPIO_ACTIVE_LOW));
+#define GPIO_PIN_INTERRUPT_CONFIGURE(node_id) CHK(gpio_pin_interrupt_configure_dt(&BUTTON_FOR_ID(node_id), GPIO_INT_EDGE_TO_ACTIVE));
 
 static void configure_buttons(void) {
     DT_FOREACH_CHILD(DT_PATH(gamepad_buttons), GPIO_PIN_CONFIGURE)
+
+    // Allow any button press to wake the device from System OFF.
+    // (This is consistent with how sys_button was already configured: interrupts enabled, no callback.)
+    DT_FOREACH_CHILD(DT_PATH(gamepad_buttons), GPIO_PIN_INTERRUPT_CONFIGURE)
 
     // sys_button is probably one of the gamepad buttons we just configured,
     // but configure it anyway in case it's not.
