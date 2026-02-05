@@ -479,6 +479,29 @@ static void handle_buttons() {
     }
     prev_sys_button_state = sys_button_state;
 
+    // Check custom pairing combo: South + East + Dpad Right held for 10s
+    static bool combo_was_active = false;
+    static int64_t combo_start_time = 0;
+    
+    // We can read these even before assigning to report, checks current GPIO state
+    bool combo_active = BUTTON_GET(south) && BUTTON_GET(east) && BUTTON_GET(dpad_right);
+    
+    if (combo_active) {
+        if (!combo_was_active) {
+            combo_start_time = now;
+            combo_was_active = true;
+        } else {
+            if ((now - combo_start_time) >= 10000) {
+                 // Trigger pairing mode (clear bonds)
+                 // Prevent re-triggering until release by pushing start time into future
+                 combo_start_time = now + 999999;
+                 k_work_submit(&clear_bonds_work);
+            }
+        }
+    } else {
+        combo_was_active = false;
+    }
+
     report.menu = BUTTON_GET(start);
     report.options = BUTTON_GET(select);
     report.stadia = BUTTON_GET(home);
